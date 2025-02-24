@@ -6,70 +6,86 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>811</width>
-    <height>579</height>
+    <width>1002</width>
+    <height>702</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1002</width>
+    <height>702</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLineEdit, QComboBox {
+   <string notr="true">QLineEdit, QComboBox, QSpinBox, QDateTimeEdit {
 	background-color: white;
 	border:2px solid rgba(0,0,0,0);
+	border-radius: 4px;
 	border-bottom-color:rgba(46,82,101,200);
 	color:rgb(0,0,0);
-	border-radius: 5px;
+	padding-bottom:7px;
 }
-
+ 
 #btnCadastrarCurso {
 	background-color: #01498a;
 	color: #FFF;
-border: none;
-border-radius: 15px;
+	border: none;
+	border-radius: 15px;
 }
-
+ 
 #btnCadastrarCurso:hover {
 	background-color: #f6921e;
 }
-
-#respostas {
+ 
+#respostaCadastrando {
 	color: red;
-}</string>
+}
+ 
+#respostaCadastroIncompleto {
+	color: red;
+}
+#titulo {
+	color: #f6921e;
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item alignment="Qt::AlignHCenter|Qt::AlignTop">
-    <widget class="QLabel" name="label">
+   <item>
+    <widget class="QLabel" name="titulo">
      <property name="font">
       <font>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
+       <pointsize>17</pointsize>
       </font>
      </property>
      <property name="text">
-      <string>CADASTRO DE CURSOS</string>
+      <string>Cadastro de Cursos</string>
      </property>
-     <property name="scaledContents">
-      <bool>false</bool>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
-   <item alignment="Qt::AlignHCenter">
-    <widget class="QFrame" name="frame">
+   <item>
+    <widget class="QFrame" name="frame_2">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="minimumSize">
       <size>
-       <width>793</width>
-       <height>486</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="frameShape">
@@ -78,220 +94,487 @@ border-radius: 15px;
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <widget class="QLineEdit" name="nomeCurso">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>90</y>
-        <width>231</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="placeholderText">
-       <string>Nome do Curso</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>190</y>
-        <width>111</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Período do Curso</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="periodoCurso">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>221</y>
-        <width>111</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="editable">
-       <bool>false</bool>
-      </property>
-      <item>
-       <property name="text">
-        <string>Manhã</string>
-       </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QFrame" name="frame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QFrame" name="frame_3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Oferta do Curso</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="ofertaCurso">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>47</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="frame_4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Período do Curso</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="periodoCurso">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>47</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="editable">
+               <bool>false</bool>
+              </property>
+              <item>
+               <property name="text">
+                <string>Manha</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Tarde</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Noite</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="frame_5">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Horas por Dia</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDateTimeEdit" name="horasPorDia">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>47</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="time">
+               <time>
+                <hour>0</hour>
+                <minute>0</minute>
+                <second>0</second>
+               </time>
+              </property>
+              <property name="displayFormat">
+               <string>HH:mm</string>
+              </property>
+              <property name="timeSpec">
+               <enum>Qt::LocalTime</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
-      <item>
-       <property name="text">
-        <string>Tarde</string>
-       </property>
+      <item row="0" column="1">
+       <widget class="QFrame" name="frame_6">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QFrame" name="frame_7">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Nome do Curso</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="nomeCurso">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>47</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="placeholderText">
+               <string>Nome do Curso</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="frame_8">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Área</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="campoArea">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>47</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="editable">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="frame_9">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Quantidade de Alunos</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="quantidadeAlunos">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>47</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
-      <item>
-       <property name="text">
-        <string>Noite</string>
-       </property>
+      <item row="0" column="2">
+       <widget class="QFrame" name="frame_10">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QFrame" name="frame_11">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Raised</enum>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_11">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Carga Horária</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="cargaCurso">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>47</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>3000</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
-     </widget>
-     <widget class="QLineEdit" name="ofertaCurso">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>90</y>
-        <width>231</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="placeholderText">
-       <string>Oferta</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="cargaCurso">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>220</y>
-        <width>231</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="placeholderText">
-       <string>Carga Horária</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="quantidadeAlunos">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>340</y>
-        <width>231</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="tabletTracking">
-       <bool>false</bool>
-      </property>
-      <property name="placeholderText">
-       <string>Quantidade de Alunos</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="horasPorDia">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>340</y>
-        <width>231</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>10</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="placeholderText">
-       <string>Horas por dia</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="campoArea">
-      <property name="geometry">
-       <rect>
-        <x>530</x>
-        <y>90</y>
-        <width>231</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="editable">
-       <bool>false</bool>
-      </property>
-      <property name="currentText">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>530</x>
-        <y>60</y>
-        <width>55</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Área</string>
-      </property>
-     </widget>
+     </layout>
     </widget>
    </item>
    <item>
@@ -311,7 +594,7 @@ border-radius: 15px;
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="text">
-      <string>Cadastrar</string>
+      <string>Cadastrar Curso</string>
      </property>
     </widget>
    </item>
@@ -319,13 +602,8 @@ border-radius: 15px;
  </widget>
  <tabstops>
   <tabstop>nomeCurso</tabstop>
-  <tabstop>ofertaCurso</tabstop>
   <tabstop>campoArea</tabstop>
-  <tabstop>periodoCurso</tabstop>
-  <tabstop>cargaCurso</tabstop>
-  <tabstop>horasPorDia</tabstop>
   <tabstop>quantidadeAlunos</tabstop>
-  <tabstop>btnCadastrarCurso</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QDateEdit
+
+from PyQt5.QtWidgets import QWidget, QDateEdit, QComboBox
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QTimer, QDate, QTime, pyqtSlot
 
@@ -6,11 +7,13 @@ from PyQt5.QtCore import QTimer, QDate, QTime, pyqtSlot
 # from App.model.login import Login
 # Não está sendo utilizado no arquivo
 
-from App.controller.curso import listarCursos, buscarCursoId
+from App.view.telaConfirmacao import TelaConfirmacao
+
+from App.controller.curso import listarCurso, buscarCursoId, lista_de_cursos
 from App.controller.pessoa import buscarPessoas
 from App.controller.sala import listarSala
-from App.controller.utils import modificarData
-from App.controller.reserva import fazendoReserva, validarCadastro, validarDiaSemana
+from App.controller.utils import modificarData, modificarDataReserva
+from App.controller.reserva import validarCadastro, validarDiaSemana, realizar_reserva_no_dia
 from App.controller.login import pegarUsuarioLogado
 
 
@@ -18,7 +21,18 @@ class ReservaInterface(QWidget):
     def __init__(self):
         super().__init__()
         loadUi('App/view/ui/reserva.ui',self)
-        self.popularJanela()
+        self.dadosConsultados = {
+            'pessoas': buscarPessoas(),
+            'salas': listarSala(),
+            #'cursos': listarCurso(),
+            'cursos': lista_de_cursos()
+        }
+
+        self.comboBoxOferta()
+        self.comboBoxPessoa()
+        self.comboBoxSala()
+        self.setPeriodos(0)
+        self.selecionarOferta()
 
         # Os metodos abaixo servem para transformar o QDateEdit em um calendário
         self.diaInicio = self.findChild(QDateEdit, 'diaInicio') 
@@ -27,22 +41,34 @@ class ReservaInterface(QWidget):
         self.diaInicio.setCalendarPopup(True)
         self.diaInicio.setDisplayFormat('dd/MM/yyyy')
         self.diaInicio.setDate(QDate.currentDate())
-        self.setDataMinima()
-        self.setMinimoFim()
-        self.setPeriodos()
-        self.diaInicio.dateChanged.connect(self.setDataMinima)
-        self.inicioCurso.timeChanged.connect(self.setMinimoFim)
-        self.cursoReserva.currentIndexChanged.connect(self.setPeriodos)
-
         self.diaFim.setCalendarPopup(True)
         self.diaFim.setDisplayFormat('dd/MM/yyyy')
-        self.diaFim.setDate(QDate.currentDate()) 
+        self.diaFim.setDate(QDate.currentDate())
+        self.setDataMinima()
+        
+        self.diaInicio.dateChanged.connect(self.setDataMinima)
+        self.inicioCurso.timeChanged.connect(self.setIntervaloHoras)
+        self.cursoReserva.currentIndexChanged.connect(self.selecionarOferta)
+
+        self.checkFrame.setStyleSheet("""
+            QCheckBox::indicator {
+                width: 30px;
+                height: 30px;
+            }
+            QCheckBox::indicator:unchecked {
+                image: url("App/view/ui/icones/iconCheckLaranja.png");
+            }
+            QCheckBox::indicator:checked {
+                image: url("App/view/ui/icones/iconCheckAtivo.png");
+            }
+        """)
+        
 
     def getDados(self)->dict:
         """Pegando o dados na interface e retornando os valores"""
         pessoas = buscarPessoas()
         sala = listarSala()
-        curso = listarCursos() 
+        curso = listarCurso() 
         nomeDocenteResponsavel = self.nomeDocente.currentText().strip()
         idDocente = pessoas[nomeDocenteResponsavel]
         nomeSala = self.salaReserva.currentText().strip()
@@ -87,12 +113,31 @@ class ReservaInterface(QWidget):
         idLogin = pegarUsuarioLogado()
         diasValidos = (info['seg'], info['ter'], info['qua'], info['qui'], info['sexta'], info['sab'], False)
         if validarDiaSemana(info['diaInicio'], diasValidos):
-            validacao = validarCadastro(info, diasValidos)
-            if len(validacao):
-                print('Não foi possível fazer a reserva, já existe uma reserva nesse horário')
-                return
-            fazendoReserva(idLogin.get('id_login'), info, diasValidos)
-            print('Reserva feita com sucesso!')
+            dias_livres, dias_ocupados = validarCadastro(info, diasValidos)
+
+            if dias_livres and dias_ocupados:
+                #fazer a pergunta se quer cadastrar mesmo assim
+                txt = ''
+                for dia, reserva in dias_ocupados.items():
+                    txt += f'{dia} | {reserva[1][2]} - {reserva[1][3]}\n'
+                    
+                confirmacao = TelaConfirmacao( 'Conflitos', txt, 'Confirmar')
+                if confirmacao.exec_():
+                    realizar_reserva_no_dia(idLogin.get('id_login'), info, dias_livres)
+                    print('Reserva feita com sucesso!')
+                    return
+                else:
+                    print('Não foi possível fazer a reserva, já existe uma reserva nesse horário')
+
+            elif dias_livres and not dias_ocupados:
+                # fazer reserva direto
+                realizar_reserva_no_dia(idLogin.get('id_login'), info, dias_livres)
+                print('Reserva feita com sucesso!')
+
+            elif not dias_livres:
+                # mostrar que nao tem dias disponiveis para reserva
+                print('ninhum dia disponivel para reserva')
+
         return
     
     
@@ -105,49 +150,68 @@ class ReservaInterface(QWidget):
         """Define o horário mínimo para acabar a reserva"""
         horarioComeco = self.inicioCurso.time()
         self.fimCurso.setMinimumTime(horarioComeco)
-        
-    def popularJanela(self):
-        """Popula os comboBoxes com dados do banco."""
-        self.comboBoxCurso()
-        self.comboBoxPessoa()
-        self.comboBoxSala()
 
-    def comboBoxCurso(self):
-        cursos = listarCursos()
+
+    def comboBoxOferta(self):
+        ofertas = [curso.get_oferta() for curso in self.dadosConsultados['cursos'] ]
         self.cursoReserva.clear()
-        self.cursoReserva.addItems(cursos.keys())
-
+        self.cursoReserva.addItems(ofertas)
+    
+    
     def comboBoxPessoa(self):
         """Busca as pessoas no banco e popula o comboBox."""
-        pessoas = buscarPessoas()
+        pessoas = self.dadosConsultados['pessoas']#buscarPessoas()
         self.nomeDocente.clear()
         self.nomeDocente.addItems(pessoas.keys())
 
     def comboBoxSala(self):
         """Busca as salas no banco e popula o comboBox."""
-        salas = listarSala()
+        salas = self.dadosConsultados['salas']#listarSala()
         self.salaReserva.clear()
         self.salaReserva.addItems(salas.keys())
 
-    def setPeriodos(self):
+    # selecionar curso com base no valor da oferta selecionada
+    def selecionarOferta(self):
+        idx = self.cursoReserva.currentIndex()
+        nome_curso = self.dadosConsultados['cursos'][idx].get_nome()
+        self.nomeCurso.setText(nome_curso)
+        self.setPeriodos(idx)
+
+    def setPeriodos(self, indice):
         """Verifica o período e depois define os horários"""
-        periodo = self.getPeriodoCurso()
-        horasDia = self.getHorasCurso()
-        intervalo = {'Manhã': (8,0,0), 'Tarde': (13,30,0), 'Noite': (19,0,0)}
+        curso = self.dadosConsultados['cursos'][indice]
+        periodo = curso.get_periodo()
+        intervalo = {'Manha': (8,0,0), 'Tarde': (13,30,0), 'Noite': (19,0,0)}[periodo]
         horas = QTime()
-        horas.setHMS(*intervalo[periodo])
-        self.setHoraInicio(horas)
+        horas.setHMS(*intervalo)
+        self.inicioCurso.setTime(horas)
+        self.setIntervaloHoras()
+
+    def setIntervaloHoras(self):
         self.setMinimoFim()
-        horas.setHMS(horas.hour() + horasDia, horas.minute(), 0)
-        self.setHoraFim(horas)
+        indice = self.cursoReserva.currentIndex()
+        curso = self.dadosConsultados['cursos'][indice]
+        horasDia = curso.get_horasDia().__str__().split(':')
+        horas = QTime()
+        horaInicio = self.getHoraInicio()
+        horas.setHMS(horaInicio.hour(), horaInicio.minute(), 0)
+        horas.setHMS(horas.hour() + int(horasDia[0]), horas.minute(), 0)
+        self.fimCurso.setTime(horas)
 
     def getPeriodoCurso(self):
+        """Retorna o período do curso"""
         idCurso = self.getIdCurso()
         dados = buscarCursoId(idCurso)
         periodo = dados.get('periodo')
         return periodo
 
-    def getHorasCurso(self):
+    def getHoraInicio(self):
+        """Retorna a hora de ínicio"""
+        horaInicio = self.inicioCurso.time()
+        return horaInicio
+
+    def getHorasCurso(self, hora):
+        """Retorna às horas diarias do curso"""
         idCurso = self.getIdCurso()
         dados = buscarCursoId(idCurso)
         horasDia = dados.get('horasDia')
@@ -156,6 +220,7 @@ class ReservaInterface(QWidget):
         return int(hora)
     
     def getIdCurso(self):
+        """Retorna o id do curso"""
         dados = self.getDados()
         curso = dados.get('idCurso')
         return curso
